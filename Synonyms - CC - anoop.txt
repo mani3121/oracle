@@ -1,0 +1,29 @@
+1. Shipment -Synonym (Q-2347)
+Create a synonym with the name 'package' for the table shipment.
+
+create synonym package
+for shipment;
+
+2. Update Status- Triggers (2343)
+Create a trigger named 'shipment_status_af_update' that is triggered whenever the shipment_status table is updated. 
+This trigger will insert the name and action into the table 'status_log_history' after the updation of shipment_status details. 
+The action name in the affected log table status_log_history is 'After_Update_Shipment_Status'. 
+Hints: 
+Trigger name : shipment_status_af_update 
+Table name : status_log_history 
+Field names : name,action
+Action  : 'After_Update_Shipment_Status'. 
+Hint: Add / after the end statement
+
+create trigger shipment_status_af_update
+after update on shipment_status for each row
+begin
+insert into status_log_history
+(name, action)
+select s.name, 'After_Update_Shipment_Status'
+from shipment s 
+where s.shipment_status_id in
+(select id from shipment_status where 
+id = :new.id);
+end;
+/

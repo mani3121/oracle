@@ -1,0 +1,158 @@
+================== LC ====================
+
+1. procedure invoice line 2262
+Create a procedure named 'select_invoice_line' that is used to display the details of the invoice line. This procedure takes invoice line id(i.e, invoice_line_id) as input and returns the type, amount and quantity of the given id as invoice_line_details. The invoice_line_details should be returned as 'sys_refcursor'. The details must include the following: type, amount, quantity. 
+
+Hints: Procedure name: select_invoice_line
+Input parameter : invoice_line_id with data type as number
+Output parameter: invoice_line_details with data type as SYS_REFCURSOR.
+
+create or replace procedure select_invoice_line
+(
+invoice_line_id IN number,
+invoice_line_details OUT SYS_REFCURSOR
+)
+AS
+BEGIN
+OPEN invoice_line_details FOR 
+SELECT type, amount, quantity
+FROM invoice_line
+WHERE id = invoice_line_id;
+END select_invoice_line;
+/
+
+2. Create a procedure named 'select_invoice' that is used to display the details of the invoice. This procedure takes id(i.e, invoice_id) as input and returns the status and paper_invoice_batch_number as invoice_details . The invoice_details should be returned as 'sys_refcursor'. The details must include the following: status, paper_invoice_batch_number.
+
+Hints: Procedure name: select_invoice 
+Input parameter : invoice_id with data type as number 
+Output parameter: invoice_details with data type as SYS_REFCURSOR.
+
+CREATE OR REPLACE PROCEDURE select_invoice
+(
+invoice_id IN number,
+invoice_details OUT SYS_REFCURSOR
+)
+AS
+BEGIN
+OPEN invoice_details FOR
+SELECT status, paper_invoice_batch_number
+FROM invoice
+WHERE id = invoice_id;
+END select_invoice;
+/
+
+3. Functions find transaction type 2264
+Please go through the below Function spec: (a) Function: Create a function named 'find_transaction_type' that will accept the transaction_type_id as input. Based on this input, the function must return the transaction type name of type varchar.
+Function name : find_transaction_type 
+Input Parameter : transaction_type_id in int 
+Design rules: 1)If transaction type id(i.e, transaction_type_id) passed as input, matches with the id in the transaction table,then it returns the type of the given transaction_type_id.   
+2)If the transaction type id passed as input, does not match with the id in the transaction table,then it throws 'no_data_found' exception and displays it with the text as  'No such Type'
+
+Note: DO NOT CHANGE the given error code or error message description in your solution. Note: Kindly use variable to print the exceptions instead of  'dbms_output.put_line' ie:   umpire_name  := 'No such umpire';
+
+CREATE OR REPLACE FUNCTION find_transaction_type
+(
+transaction_type_id int
+)
+RETURN VARCHAR
+IS
+transaction_type_name VARCHAR(255) := 'no_data_found';
+BEGIN
+SELECT type into transaction_type_name
+FROM transaction_type
+WHERE id = transaction_type_id;
+RETURN transaction_type_name;
+EXCEPTION 
+WHEN NO_DATA_FOUND THEN
+RETURN 'No such Type';
+END;
+/
+
+4. Functions find invoice status 2265
+Please go through the below Function and Exception spec: (a) Function: Create a function named 'find_invoice_status' that will accept the cust_id as input. Based on this input, the function must return the status of the invoice of type varchar. 
+Function name : find_invoice_status
+Input Parameter : cust_id in int 
+Design rules: 1)If customer_id(i.e, cust_id) passed as input, matches with the customer_id in the invoice table,then it returns the status for the given cust_id.  
+2)If the customer_id passed as input, does not match with the id in the invoice table,then it throws 'no_data_found' exception and displays it with the text as  'No Such Customer'.
+3)If the customer has more than one invoice ,then it throws an exeption 'TOO_MANY_ROWS' and displays it with a text as 'Multiple Rows Returned' .
+
+Note: DO NOT CHANGE the given error code or error message description in your solution. Note: Kindly use variable to print the exceptions instead of  'dbms_output.put_line' ie:   umpire_name  := 'No such umpire';
+
+CREATE OR REPLACE FUNCTION find_invoice_status
+(
+cust_id int
+)
+RETURN varchar
+IS
+invoice_status varchar(255) := 'No Such Customer';
+BEGIN
+SELECT status INTO invoice_status
+FROM invoice
+WHERE customer_id = cust_id;
+RETURN invoice_status;
+EXCEPTION
+WHEN no_data_found THEN 
+RETURN 'No Such Customer';
+WHEN TOO_MANY_ROWS THEN
+RETURN 'Multiple Rows Returned';
+END;
+/
+
+5. Functions find authorization 2266
+Please go through the below Function and Exception spec: (a) Function: Create a Function named 'find_authorization' which takes trans_id as input and returns the processor name of type varchar. 
+Function name:    find_authorization. 
+Input Parameter:  trans_id with data type as varchar 
+Design rules: 1)If transaction_id(i.e, trans_id) passed as input, matches with the transaction_id in the payment authorization table,then it returns the name(i.e, processor_name) for the given transaction_id.   2)If the trans_id passed as input, does not match with the transaction_id in the payment authorization table, then use 'cursor not found' to return the processor_name with the text as 'No Such Payment Authorization'.
+
+Note: DO NOT CHANGE the given error code or error message description in your solution. Note: Kindly use variable to print the exceptions instead of  'dbms_output.put_line' ie:   umpire_name  := 'No such umpire';
+
+CREATE OR REPLACE FUNCTION find_authorization
+(
+trans_id varchar
+)
+RETURN varchar
+IS
+processor_name varchar(255) := 'Processor Name';
+BEGIN
+SELECT processor INTO processor_name
+FROM payment_authorization
+WHERE transaction_id = trans_id;
+RETURN processor_name;
+EXCEPTION
+WHEN no_data_found THEN
+RETURN 'No Such Payment Authorization';
+END;
+/
+
+================== LC ====================
+
+================== CC ====================
+
+1. Find commodity Identification-Cursors & Exception 2331
+Create a function named 'find_commodity_identification' that will accept the com_rate_id as input. Based on this input, the function must return the model name of varchar type for the given com_rate_id. 
+Function name: find_commodity_identification
+Input Parameter: com_rate_id with integer type 
+Output variable: model_name with varchar type 
+Design rules: 1)If rate_id(i.e, com_rate_id) passed as input, matches with the rate_id in the commodity_identification table, then it returns the model for the given com_rate_id.   
+2)If the com_rate_id passed as input, does not match with the rate_id in the commodity_identification table, then it throws 'no_data_found' exception and displays it with the text as  'No such Model' 
+Note: DO NOT CHANGE the given error code or error message description in your solution. Note: Kindly use variable to print the exceptions instead of  'dbms_output.put_line'
+
+Add / to the end of the query. Refer to the given schema for commodity identification details.
+
+CREATE OR REPLACE FUNCTION find_commodity_identification
+(
+com_rate_id int
+)
+RETURN varchar
+IS
+model_name varchar(255) := 'No such Model';
+BEGIN
+SELECT model INTO model_name
+FROM commodity_identification
+WHERE rate_id = com_rate_id;
+RETURN model_name;
+EXCEPTION
+WHEN no_data_found THEN
+RETURN 'No such Model';
+END;
+/

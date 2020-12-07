@@ -1,0 +1,44 @@
+SQL*Plus and SELECT Statement - CC
+
+1. Write a query to display all the company details. Display the records sorted in ascending order based on the name.
+
+SELECT * FROM COMPANY ORDER BY NAME
+
+2. Write a query to display id and description of the rate details which charges above 18000. Display the records sorted in ascending order based on the id.
+
+SELECT ID, DESCRIPTION FROM RATE WHERE CHARGE > 18000
+ORDER BY ID ASC
+
+3. Write a query to display id and description of the rate details which charges less than 10000. Display the records sorted in ascending order based on the id. 
+
+SELECT ID, DESCRIPTION FROM RATE WHERE CHARGE < 10000 
+ORDER BY ID ASC
+
+4. Write a query to display id, street, city, email and home_phone details of the country 'USA' from the address table. Display the records sorted in ascending order based on the id.
+
+SELECT  id, street, city, email,  home_phone FROM ADDRESS WHERE COUNTRY = 'USA'
+ORDER BY ID ASC
+
+5. Write a query to display the name, iata and fmc of all the agents. Display the records sorted in ascending order based on the name.
+
+
+
+SET 2:
+1. Write a query to display the name, iata and fmc of all the agents. Display the records sorted in ascending order based on the name.
+
+select name, iata, fmc from agent order by name asc
+
+2. Write a query to display id and status for the  shipment_status table  with code '25'.
+
+select id, status from shipment_status where code = '25'
+
+3. Write a query to display id and description of the rate details having minimum rate in the range between 50 and  250. Display the records sorted in ascending order based on the id.
+
+select id, description from rate where rate_min between 50 and 250
+order by id asc
+
+4. Write a query to display id, street, email, home_phone and zip code details of the city 'Chennai' from the address table. Display the records sorted in ascending order based on the id
+
+select id, street, email, home_phone, zip_code from address where city = 'Chennai'
+order by id asc
+

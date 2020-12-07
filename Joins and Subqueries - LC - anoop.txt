@@ -1,0 +1,179 @@
+1. Write a query to display all the customer details which were created by the user with username 'arun'. Display the records in ascending order based on their id.
+
+select C.* from customer C, user_details U
+where U.username = 'arun' and
+U.contact_id = C.created_user_id
+
+2. Write a query to display org_name, street_address1, street_address2, city, state, phone_number and email of all the customers with credit limit more than 25000. Display the records in ascending order based on their org_name. HINT: Use Subquery.
+
+select org_name, street_address1, street_address2, city, state, phone_number, email
+from contact
+where id in(select contact_id
+from customer
+where credit_limit > 25000)
+order by org_name asc
+
+3. Write a query to display the first_name, phone_number and email of all the users who have not logged in till date. Display the records in ascending order based on their first_name.
+
+select first_name, phone_number, email 
+from contact
+where id in (select contact_id from user_details
+where lastLogin_time is null)
+order by first_name
+
+4. Write a query to display the invoice_id , amount and status of all the payments which were received in the transaction type mode as 'Credit Card'. Display the records in ascending order based on the amount and then in ascending order based on the  invoice id. 
+
+select invoice_id , amount, status
+from payment
+where transaction_type_id in (select id from transaction_type
+where type = 'Credit Card')
+order by amount asc,
+invoice_id asc
+
+5. Write a query to display the invoice_id, amount and status of all the payment which were received in the transaction type as 'Cheque'. Display the records in descending order based on the amount and then in ascending order based on invoice id.
+
+select invoice_id, amount, status
+from payment
+where transaction_type_id in (select id from transaction_type
+where type = 'Cheque')
+order by amount desc,
+invoice_id asc
+
+6. Write a query to display the paper_invoice_batch_number,due_date,last_reminder and balance of the customers whose org_name is 'Cognizant'. Display the records in descending order based on their balance and then in ascending order based on the last_reminder. 
+
+select paper_invoice_batch_number, due_date, last_reminder, balance
+from invoice 
+where customer_id in
+( select id 
+from customer
+where contact_id in
+( select id
+from contact 
+where org_name = 'Cognizant'))
+order by balance desc,
+last_reminder asc
+
+7. Write a query to display the bill_type, active_since, active_until, status of all the purchase_orders which were created by the user whose first name is 'Arun'. Display the records in ascending order based on their bill_type. 
+
+select bill_type, active_since, active_until, status
+from purchase_order
+where created_user_id in
+( select id from user_details
+where contact_id in 
+( select id from contact 
+where first_name = 'Arun'))
+order by bill_type asc
+
+8. Write a query to display the invoice_id, amount and status of all the payments which were made by the customers whose org_name is 'ABC Tech Park'. Display the records in descending order based on the amount.
+
+select pay.invoice_id, pay.amount, pay.status
+from payment pay 
+where pay.invoice_id in 
+(select inv.id
+from invoice inv 
+where inv.customer_id in 
+(select cust.id
+from customer cust
+where cust.contact_id in 
+(select con.id
+from contact con
+where con.org_name = 'ABC Tech Park')))
+order by pay.amount desc;
+
+7. Write a query to display customer's org_name, first_name, phone_number, email, customer notes and credit_limit for all the customers. Display the records in ascending order based on org_name and then by first_name.
+
+select a.org_name, a.first_name, a.phone_number, a.email, b.notes, b.credit_limit
+from contact a, customer b 
+where b.contact_id = a.id
+order by a.org_name asc,
+a.first_name asc
+
+8. Write a query to display the org_name and total amount of all the invoices raised for that organization and give the alias name as 'total_amount'. Display the records in descending order based on their total_amount.
+
+select a.org_name, sum(b.total) as total_amount
+from contact a join
+    customer c 
+    on c.contact_id = a.id join
+    invoice b 
+    on b.customer_id = c.id
+group by a.org_name
+order by total_amount desc
+
+9. Write a query to display first_name, username and email of all the users those who have not logged in till date. Display the records in ascending order based on their first_name.
+
+select a.first_name, b.username, a.email
+from contact a join
+    user_details b on
+        a.id = b.contact_id
+where b.lastlogin_time is null
+order by a.first_name asc
+
+10. Write a query to display the org_name, payment amount and transaction_type for all the customers. Display the records in ascending order based on the org_name. 
+
+select a.org_name, b.amount, c.type
+from contact a join
+	customer d on
+        a.id = d.contact_id join 
+	invoice e on
+		d.id = e.customer_id join
+	payment b on
+		b.invoice_id = e.id join
+	transaction_type c on
+		b.transaction_type_id = c.id
+order by a.org_name;
+
+11. Write a query to display the sum of the total amount received through the credit card and cheque. Give the alias names as 'total_credit' and 'total_cheque' respectively. 
+
+WITH
+   T
+AS
+(
+   SELECT
+      pay.amount,
+	  tt.type
+   FROM
+      payment pay join
+		transaction_type tt on
+			pay.transaction_type_id = tt.id
+)
+SELECT
+   *
+FROM
+   T
+PIVOT
+(
+   SUM(amount)
+   FOR
+      (type)
+   IN
+      ('Credit Card' as total_credit, 
+      'Cheque' as total_cheque)
+)
+
+12. Write a query to display the org_name, invoice total, sum of all payment amount and balance of the invoice in which payment status is 'Completed'. Give the alias for total payment received as 'Amount_Paid'. Display the records in descending order based on  the total amount .
+
+select 
+    ct.org_name,
+	inv.total,
+	sum(pay.amount) as Amount_Paid,
+	inv.balance
+from contact ct join
+	customer cust on
+		cust.contact_id = ct.id join
+	invoice inv on
+		inv.customer_id = cust.id join
+	payment pay on
+		pay.invoice_id = inv.id
+where pay.status = 'Completed'
+group by ct.org_name,inv.total,inv.balance
+order by total desc;
+
+13. Write a query to display the internal_number and number of orders received for each item with alias name as 'number_of_orders'. Display the records in ascending order based on internal number. 
+
+select it.internal_number,
+	count(ord.id) as number_of_orders
+from item it join
+	order_line ord on
+		ord.item_id = it.id
+group by it.internal_number
+order by it.internal_number asc

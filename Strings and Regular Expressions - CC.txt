@@ -1,0 +1,15 @@
+1. User role(Q-2369)
+Write a query to display the first_name and role_name of the user by replacing the role_name 'Admin' with 'Administrator'. Give an  alias name as 'user_role'. Display the records sorted in ascending order based on the first_name. 
+
+Note:Use replace().
+
+select first_name, replace(role_name, 'Admin', 'Administrator') as user_role
+from user_details
+order by 1 asc;
+
+2. Port count(Q-2375)
+Write a query to display the number of ports who have country name starting with 'A'. Give an alias to the number of ports as 'port_count'
+
+select count(*) as port_count
+from port
+where country like 'A%';

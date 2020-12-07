@@ -1,0 +1,91 @@
+Data Conversion & Aggregating Data - LC
+
+1. Write a query to display all the user details which were created in the year 2015. Display the records in ascending order based on their id.
+
+SELECT * FROM USER_DETAILS WHERE CREATED_TIME LIKE '%-15%'
+ORDER BY ID ASC
+
+select * from user_details
+where extract (year from created_time) = 2015
+order by id asc
+
+2. Write a query to display the unique bank_name of all the cheques received. Display the records in ascending order based on their bank_name. 
+
+SELECT DISTINCT BANK_NAME  FROM CHEQUE
+ORDER BY BANK_NAME ASC
+
+3. Write a query to display the maximum credit limit of a customer. Give an alias name for maximum credit limit as 'max_limit'. 
+
+SELECT MAX(CREDIT_LIMIT) AS "max_limit"   FROM customer
+
+4. Write a query to display the minimum total amount of the invoice raised. Give an alias name for minimum total amount as 'min_total'. 
+
+SELECT MIN(TOTAL) AS "min_total"   FROM INVOICE 
+
+5. Write a query to display the total balance of all the invoice raised. Give an alias name for total balance as 'total_balance'. 
+
+SELECT SUM(BALANCE) AS "total_balance"   FROM INVOICE 
+
+6. Write a query to display the total number of customers. Give an alias name for number of customers as 'customer_count'. 
+
+SELECT COUNT(*) AS "customer_count" FROM CUSTOMER
+
+7. Write a query to display the average amount of the payment that were received. Give an alias name for average amount as 'average_payment'. 
+
+SELECT AVG(AMOUNT) AS  "average_payment" FROM PAYMENT
+
+8. Write a query to display all the details of  purchase orders which were billed in the year 2016. Display the records in ascending order based on their id. 
+
+SELECT * FROM PURCHASE_ORDER WHERE CREATED_TIME LIKE '%-16%'
+ORDER BY ID ASC
+
+9. Write a query to display the number of users  who have not logged in till date. Give the alias name as 'Inactive_Users'. 
+
+SELECT COUNT(ID) AS "Inactive_Users" FROM USER_DETAILS WHERE LASTLOGIN_TIME IS NULL
+
+10. Write a query to display the number of purchase orders with status 'Completed'. Give alias name as 'Completed_Orders'. 
+
+SELECT COUNT(STATUS) AS "Completed_Orders" FROM PURCHASE_ORDER WHERE STATUS = 'Completed'
+
+11. Write a query to display first_name, last_name, phone_number, email of the contact details and If there is a null value in last_name then replace it with 'first_name' and give an alias name as 'updated_last_name'. Display the records in descending order based on their first_name. 
+
+SELECT FIRST_NAME, LAST_NAME, PHONE_NUMBER, EMAIL, COALESCE(LAST_NAME, FIRST_NAME) AS UPDATED_LAST_NAME FROM CONTACT
+ORDER BY FIRST_NAME DESC
+
+12. Write a query to display the paper_invoice_batch_number, due_date, last_reminder and balance of the invoice details and if the balance is greater than or equal to  '25000' then display it as 'Overdue' or else 'Nil' with an alias name as 'due_status' of all the invoice. Display the records in descending order based on their balance. 
+
+select paper_invoice_batch_number, due_date, last_reminder, balance, 
+(case when balance >= 25000 then 'Overdue'
+when balance < 25000 then 'NIL' end) due_status
+from invoice
+order by balance desc
+
+13. Write a query to display the id, due_date, total and balance of all the invoices which were raised in the 1st quarter of 2015. Display the records in descending order based on their balance. 
+
+select id, due_date, total, balance
+from invoice 
+where extract(year from created_time) = 2015 
+and extract(month from created_time) = any(1,2,3)
+order by balance desc
+
+14. Write a query to display the invoice_id, amount and created_time of all the payments which were received in the month of May 2014. Display the records in ascending order based on their invoice id. 
+
+select invoice_id, amount, created_time
+from payment
+where extract (month from created_time) = 5 and extract(year from created_time) = 2014
+order by invoice_id asc
+
+15. Write a query to display the invoice_id and amount of all the payments which were received between Jan 01 2015 and Aug 31 2015. Display the records in descending order based on their amount.
+
+select invoice_id, amount from payment
+where created_time between '01-JAN-2015' and '31-AUG-2015'
+order by amount desc;
+
+SELECT INVOICE_ID, AMOUNT FROM PAYMENT WHERE CREATED_TIME LIKE '%JAN-15%' OR CREATED_TIME LIKE '%FEB-15%' OR CREATED_TIME LIKE '%MAR-15%' OR CREATED_TIME LIKE '%APR-15%'  OR CREATED_TIME LIKE '%MAY-15%' OR CREATED_TIME LIKE '%JUN-15%'
+ORDER BY AMOUNT DESC
+
+select invoice_id, amount
+from payment
+where extract (year from created_time) = 2015 and
+extract(month from created_time) between 1 and 8
+order by amount desc

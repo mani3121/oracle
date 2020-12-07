@@ -1,0 +1,63 @@
+SQL*Plus and SELECT Statement - LC
+
+1. Write a query to display all the user details. Display the records in ascending order based on their id.
+
+Select * from user_details order by ID asc
+
+2. Write a query to display all the invoice details. Display the records in ascending order based on their id.
+
+select * from invoice order by id asc
+
+3. Write a query to display the code and country of the currency details. Display the records in ascending order based on their code.
+
+Select CODE, COUNTRY from currency order by CODE asc
+
+4. Write a query to display all credit card details. Display the records in descending order based on their name.
+
+Select * from credit_card order by name desc
+
+5. Write a query to display  all the details of  the transaction_type. Display the records in ascending order based on their type.
+
+Select * from transaction_type order by type asc
+
+6. Write a query to display the first_name and last_name of the contact details. Display the records in ascending order based on their first_name.
+
+Select First_name, Last_name from contact order by first_name asc
+
+7. Write a query to display the bank_name and cheque_date of all the cheque. Display the records in ascending order based on bank_name.
+
+select bank_name, cheque_date  from cheque order by bank_name asc
+
+8. Write a query to display the first_name,last_name,org_name,city and state of all the Contact details. Display the records in ascending order based on their first_name.
+
+select  first_name, last_name, org_name, city, state  from contact order by first_name asc
+
+9. Write a query to display the id,attempt,status and amount of all the payments. Display the records in descending order based on their id.
+
+select  id, attempt, status, amount from payment order by id desc
+
+10. Write a query to display the bill_type, active_since,active_until of all the purchase_order.Display the records in ascending order based on their active_since.
+
+select bill_type, active_since, active_until from purchase_order order by active_since
+
+11. Write a query to display the username, created_time, lastlogin_time and failed_attempts of all the users . Display the records in ascending order based on their username.
+
+Select  username, created_time, lastlogin_time,  failed_attempts from user_details order by username asc
+
+12. Write a query to display the processor, code, approval_code and response_msg for all the payment_authorization. Display the records in ascending order based on it's code.
+
+select processor, code, approval_code,  response_msg from payment_authorization order by code asc
+
+13. Write a query to display the invoice_id, type, amount, quantity and price for all the invoice_line. Display the records in ascending order based on it's invoice_id.
+
+select  invoice_id, type, amount, quantity,  price from invoice_line order by invoice_id asc
+
+14. Write a query to display the internal_number, item name,deleted and price of all the item. Display the records in ascending order based on their internal_number.
+
+Select internal_number, name ,deleted,  price from item order by internal_number asc
+
+15. Write a query to display the order_id, item_id, quantity, price and description for all the order_line. Display the records  in ascending order based on order_id.
+
+Select order_id, item_id, quantity, price, description from order_line order by order_id asc
+
+

@@ -1,0 +1,27 @@
+1. Credit Limit - Functions-Programming constructs (2447)
+Create a Function named 'credit_limit' which takes shipment entity id(i.e, entity_id) as input and returns the limit_status of type varchar. 
+Function name : credit_limit 
+Input Parameter : entity_id in int 
+Output variable : limit_status variable of type varchar 
+Design rules:  1) If the credit_limit of the given entity id is greater then 50000,then display the limit_status as 'Credit limit is greater than 50000'    
+2) If the credit_limit of the given entity id is less then 50000,then display the limit_status as 'Credit limit is less than 50000' Note: DO NOT CHANGE the given status message in your solution.
+Add / to the end of the query
+
+create or replace function credit_limit
+(
+entity_id int
+)
+RETURN varchar
+IS
+limit_status varchar(255) := 'Credit limit is greater than 50000';
+BEGIN
+SELECT CASE
+	WHEN credit_limit > 50000 THEN 'Credit limit is greater than 50000'
+	ELSE 'Credit limit is less than 50000'
+	END
+INTO limit_status
+FROM shipment_entity
+WHERE id = entity_id;
+RETURN limit_status;
+END;
+/

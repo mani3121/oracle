@@ -1,0 +1,60 @@
+1. Write a query to display the year give an alias name as 'year_name' and total_profit gained in each year of all the shipments and give alias name as 'total_profit_by_year'. Display the records sorted in ascending order based on year_name. 
+
+
+2. Write a query to display notes of the commodity that has the minimum total value.In case of multiple records, display the records in ascending order based on the notes. 
+
+SELECT NOTES FROM COMMODITY WHERE TOTAL_VALUE = (SELECT MIN(TOTAL_VALUE) FROM COMMODITY)
+ORDER BY NOTES ASC
+
+3. Write a query to display the commodity id, total_weight and total_volume of the commodity having maximum quantity. 
+
+SELECT ID, TOTAL_WEIGHT, TOTAL_VOLUME FROM COMMODITY WHERE QUANTITY = (SELECT MAX(QUANTITY) FROM COMMODITY)
+
+
+
+4. Write a query to display the count of shipment status. Give an alias name as 'Shipment_status_count'.
+
+SELECT COUNT(*) AS "Shipment_status_count" FROM SHIPMENT_STATUS 
+
+5. Write a query to display the sum of total_profit of the shipments that are being shipped in the month of 'March'.Give an alias name for total
+
+SELECT SUM(TOTAL_PROFIT) AS "total_profit" FROM SHIPMENT WHERE DEPARTURE_TIME LIKE '%MAR%'
+
+6. Write a query to display city and number of agents in each city. Give an alias  name for number of agents as 'Agent_Count'. Display the records sorted in ascending order based on city.
+
+
+7. Write a query to display the role_name and the number of users under each role. Give an alias name as 'user_count'.
+
+SELECT DISTINCT ROLE_NAME, COUNT(ROLE_NAME) as "user_count" FROM USER_DETAILS
+GROUP BY ROLE_NAME
+
+8. Write a query to display notes of the commodity that has the minimum total value.In case of multiple records, display the records in ascending order based on the notes. 
+
+SELECT NOTES FROM COMMODITY WHERE TOTAL_VALUE = (SELECT MIN(TOTAL_VALUE) FROM COMMODITY) ORDER BY NOTES;
+
+SET 2:
+======
+1. Write a query to display the average rate_min and average rate_max of all the rate details. Give an alias name for average rate_min  as 'minimum_rate' and average rate_max as 'maximum_rate'. 
+
+select avg(rate_min) minimum_rate, avg(rate_max) maximum_rate
+from rate
+
+2. Write a query to display the sum of total_profit of all the shipments.Give an alias name as 'total_shipment_profit'.
+
+select sum(total_profit) as total_shipment_profit
+from shipment
+
+3. Write a query to display the shipment details which was shipped most recently. 
+
+select * from shipment
+where executed_date = (select max(executed_date)
+from shipment)
+
+4. Write a query to display notes of the commodity that has the minimum total value.In case of multiple records, display the records in ascending order based on the notes.
+select notes from commodity
+where total_value = (select min(total_value)
+from commodity)
+order by notes
+==============================================
+
+

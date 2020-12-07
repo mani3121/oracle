@@ -1,0 +1,41 @@
+Create / Insert / Update / Delete and Truncate rows - CC
+
+1. Write a query to create a table named 'address'. 
+
+Create table address (id INT Not Null Primary Key, 
+                      work_phone Varchar(50) Not Null , 
+                      home_phone Varchar(50) Not Null , 
+                      fax_phone Varchar(50) ,  
+                      email Varchar(50) , 
+                      street Varchar(50) Not Null , 
+                      city Varchar(50) Not Null , 
+                      State Varchar(50) Not Null, 
+                      zip_code INT Not Null, 
+                      country Varchar(50) Not Null);
+
+2. Write a query to create a table named 'package_type'. 
+
+Create table package_type (id INT Not Null Primary Key, 
+                      description Varchar(30) , 
+                      package_length Numeric (*,2) Not Null , 
+                      width Numeric (*,2) Not Null , 
+                      height Numeric (*,2) Not Null , 
+                      weight Numeric (*,2) Not Null , 
+                      volume Numeric (*,2) Not Null  );
+
+3. Write a query to change the column name 'description' to 'notes' in the package_type table. 
+
+Alter Table package_type
+rename column description to notes
+
+4. Write a query to change the column name 'email' to 'emailid' in the address table. 
+
+Alter Table address
+rename column email to emailid
+
+5. Write a query to create a table named 'shipment_status'. 
+
+Create table shipment_status (id INT Not Null Primary Key, 
+                      code Varchar(30) Not Null, 
+                      status Varchar(100) Not Null, 
+                      description Varchar(100) Not Null );

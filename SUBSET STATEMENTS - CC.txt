@@ -1,0 +1,26 @@
+1. Write a query to display the fmc and iata of the agent who is having the name 'AKAI IMPEX LTD', 'CARAVEL LOGISTICS PVT LTD' or 'FAREDEAL SHIPPING AGENCIES'.Display the records in ascending order based on their  fmc.(use 'in' or 'or' or 'any' keyword). 
+
+select fmc, iata from agent 
+where name = any('AKAI IMPEX LTD', 'CARAVEL LOGISTICS PVT LTD','FAREDEAL SHIPPING AGENCIES')
+order by fmc asc
+
+2. Write a query to display the description,height,width and weight of all the cargo details for which the cargo length is between 10 and 30.Display the sorted records in ascending order based on their description.
+
+select description, height, width, weight from cargo
+where cargo_length between 10 and 30
+order by description asc
+
+3. Write a query to display the name of all the ports that belong to 'India'. Display the records in ascending order based on their name. 
+
+select name from port 
+where country = 'India'
+order by name asc
+
+4. Write a query to display shipment_entity id, name and identification number of all the shipment_entity that have credit_limit greater than the credit_limit of shipment where name as 'Air Conditioner'. Display the records sorted in ascending order based on id. 
+
+Use: ANY
+
+select id, name, identification_number from shipment_entity
+where credit_limit > any(select credit_limit from shipment_entity
+where name = 'Air Conditioner')
+order by id asc

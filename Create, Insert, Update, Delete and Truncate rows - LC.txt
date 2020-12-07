@@ -1,0 +1,131 @@
+Create / Insert / Update / Delete and Truncate rows - LC
+
+
+1. Write a query to create a table named 'currency'. 
+
+Create Table currency (id INT Not NULL Primary Key,
+						Code Varchar2 (255) Not Null, 
+						Country Varchar2 (255) Not Null  );
+
+2. Write a query to create a table named 'contact'. 
+
+Create table contact (id INT Not Null Primary Key, 
+                      org_name Varchar2(255) Not Null , 
+                      Street_address1 Varchar2(255) Not Null , 
+                      street_address2 Varchar2(255) Not Null ,  
+                      city Varchar2(255) Not Null , 
+                      state Varchar2(255) Not Null , 
+                      postal_code Varchar2(255) Not Null , 
+                      country_code Varchar2(255) Not NULL, 
+                      last_name Varchar2(255), 
+                      first_name Varchar2(255) Not Null , 
+                      person_title Varchar2(255), 
+                      phone_country_code INT Not Null , 
+                      phone_area_code INT, 
+                      phone_number Varchar2(255) Not Null , 
+                      email Varchar2(255) Not Null , 
+                      created_time TIMESTAMP Not Null)
+
+3. Write a query to create a table named 'user_details'. 
+
+create table user_details
+(id int not null primary key,
+username varchar2(255) not null,
+user_password varchar2(255) not null,
+deleted int not null,
+created_time timestamp not null,
+lastupdated_time timestamp not null,
+lastlogin_time timestamp,
+failed_attempts integer,
+contact_id integer not null
+    references contact(id))
+
+4. Write a query to change the data type from varchar(255) to int for the column name 'country_code' in the contact table. 
+
+alter table contact
+modify country_code integer
+
+5. Drop Payment Authorization Table
+Write a query to drop a table named 'payment_authorization'.
+
+drop table payment_authorization;
+
+6. Insert-Credit card (2200)
+Contains the run and evaluate script of Oracle DML. Can be used as example
+
+Write a query to insert the given records into the 'Credit_card' table.
+insert into credit_card values (1,'5555555555554444','02/2017','Sasidharan','MasterCard');
+insert into credit_card values (2,'4111111111111111','05/2021','Sowmiya','Visa');
+insert into credit_card values (3,'3530111333300000','07/2022','Sinchana','JCB');
+
+7. Insert-Transaction Type (2283)
+Contains the run and evaluate script of Oracle DML. Can be used as example
+
+Write a query to insert the given records into the 'transaction_type' table.
+
+Note: Refer to the given schema. Assume the 'Transaction_type' table has already been created.
+
+insert into transaction_type (type, id) values ('Credit Card',1);
+insert into transaction_type (type, id) values ('Cheque',2);
+insert into transaction_type (type, id) values ('Cash',3);
+
+8. Update- Cheque table (2203)
+Contains the run and evaluate script of Oracle DML. Can be used as example
+
+Write a query to change the cheque_number with the bank name 'ICICI Bank' to '962541' in the cheque table.
+
+Note: Refer to the given schema. Assume the 'Cheque' table has already been created. Given are sample records inserted in the cheque table.
+
+update cheque
+set cheque_number = '962541'
+where bank_name = 'ICICI Bank';
+
+9. Update- Currency table (2284)
+Contains the run and evaluate script of Oracle DML. Can be used as example
+
+Write a query to change the code of country 'United States' from 'US' to 'USD' in the currency table.
+
+update currency
+set code = 'USD'
+where country = 'United States';
+
+10. Delete records -Cheque table (2204)
+Contains the run and evaluate script of Oracle DML. Can be used as example
+
+Write a query to delete the records with the bank_name 'Canara Bank' in the cheque table.
+
+delete from cheque
+where bank_name = 'Canara Bank';
+
+==========================================================
+
+5. Write a query to insert any 3 records into 'credit_card' table. 
+
+Insert into credit_card (id, Card_number, card_expire, name, cc_type ) values (1, '11111', '01', 'Hema', 'Chandran');
+Insert into credit_card (id, Card_number, card_expire, name, cc_type ) Values (2, '22222', '02', 'Gayathri', 'Ek');
+Insert into credit_card (id, Card_number, card_expire, name, cc_type ) Values (3, '33333', '03', 'Priya', 'M');
+
+6. Write a query to insert any 3 records into 'contact' table. 
+
+Insert into contact (id, org_name, street_address1, street_address2, city, state, postal_code, country_code, last_name, first_name, person_title, phone_country_code, phone_area_code, phone_number, email, created_time)
+values (1, 'CTS', 'No. 205', 'Godavari Street', 'Chennai', 'Tamilnadu', '600028', 'IND', 'Ekambaram', 'Hemachandran', 'Mr', 91, 044, '290379', 'hemarun.chandran@gmail.com', '2017-28-08 11:00:21.653');
+
+**Above is wrong query - Date format issue**
+
+7. Write a query to change the cheque_number with  bank name 'ICICI Bank' to '962541' in cheque table. 
+
+Update cheque set cheque_Number = '962541' where Bank_Name = 'ICICI Bank'
+
+8. Write a query to delete the records with the bank_name 'Canara Bank' in cheque table. 
+
+Delete cheque where Bank_name = 'Canara Bank'
+
+9. Write a query to insert any 3 records into 'transaction_type' table. 
+
+Insert into transaction_type (id, type) Values (11111, 'DEBIT');
+Insert into transaction_type (id, type) Values (22222, 'CREDIT');
+Insert into transaction_type (id, type) Values (33333, 'NETWORKING');
+
+10. Write a query to change the code of country 'United States' from 'US' to 'USD' in the currency table. 
+
+Update currency set CODE = 'USD' where COUNTRY = 'United States'

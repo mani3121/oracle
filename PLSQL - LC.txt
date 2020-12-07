@@ -1,0 +1,111 @@
+1. Payment count-Procedure 2261
+Create a procedure named 'payment_count' which accepts one output parameter p_count with number as its data type. This procedure should print the count of sucessful payments (response_msg as 'Successful') with alias name as 'successful_payment_count'.
+Hints: Procedure name : payment_count
+Output parameter : p_count
+Table used : payment_authorization
+Function used : count
+
+create procedure payment_count
+(
+p_count OUT number
+)
+IS
+BEGIN
+SELECT count(*) into p_count 
+from payment_authorization
+where response_msg = 'Successful';
+END;
+
+2. Insert credit -Procedure 2260
+Create a procedure named 'insert_credit' to insert the values in the credit_card table by passing 5 inputs as parameters.
+
+Hints: Procedure name:    insert_credit Input parameter : credit_id with data type as number,credit_card_number with data type as varchar,credit_card_expire with data type as varchar,holder_name with data type as varchar and card_type with data type as varchar Table used: credit_card
+
+create or replace procedure insert_credit
+(
+credit_id IN number,
+credit_card_number IN varchar,
+credit_card_expire IN varchar,
+holder_name IN varchar,
+card_type IN varchar
+)
+IS
+BEGIN
+insert into credit_card (id, card_number, card_expire, name, cc_type)
+values (credit_id, credit_card_number, credit_card_expire, holder_name, card_type);
+END;
+
+3. Find credit-Functions 2267
+Please go through the below Function spec:
+Function: Create a Function named 'find_credit_card' which takes card_no as input and returns the holder name of type varchar.
+Function name:   find_credit_card
+Input Parameter:  card_no with data type as varchar
+Output variable : holder_name with data type as varchar
+Hint: Add '/' after the end statement
+
+create or replace function find_credit_card
+( 
+card_no varchar
+)
+RETURN varchar
+IS
+holder_name varchar(255);
+begin
+select name into holder_name
+from credit_card
+where card_number = card_no;
+return holder_name;
+end;
+
+4. Find balance -Functions 2364
+Please go through the below Function spec: (a) Function: Create a Function named 'find_balance' which takes invoice_id as input and returns the balance_status of type varchar. Function name : find_balance
+Input Parameter : invoice_id in int
+Output variable : balance_status with data type varchar
+Design rules: 1) If the balance of the given invoice id is equal to zero,then display the status as 'The payment has been Completed' 2) If the balance of the given invoice id is greater than zero,then display the status as amount 'yet to be paid' for example ,If their balance = 500 then display 500 yet to be paid
+Note: DO NOT CHANGE the given status message description in your solution.
+
+create or replace function find_balance
+(
+invoice_id int
+)
+RETURN varchar
+IS
+balance_status varchar(255) := 'The Payment has been complete';
+begin
+SELECT CASE
+	WHEN balance = 0 THEN 'The Payment has been complete'
+	ELSE balance || ' yet to be paid'
+	END
+INTO balance_status
+FROM invoice 
+where id = invoice_id;
+return balance_status;
+end;
+/
+
+5. Select city -Procedure 2365
+Create a procedure named 'select_city' which accepts one input parameter user_id of type number and one output parameter city_details of type varchar. This procedure is used to display the city_details of user.If the user is from bangalore then display the city_details as 'User is from Bangalore',or if the user is from chennai then display the city_details as 'User is from Chennai', else display the city_details as 'User is from other cities'. 
+
+Hints: Procedure name: select_city 
+Input parameter : user_id with data type as number 
+Output parameter: city_details with data type as varchar.
+
+create or replace procedure select_city
+(
+user_id IN number,
+city_details OUT varchar
+)
+IS
+BEGIN
+SELECT CASE 
+	WHEN c.city = 'Bangalore' THEN 'User is from Bangalore'
+	WHEN c.city = 'Chennai' THEN 'User is from Chennai'
+	ELSE 'User is from other cities'
+	END 
+INTO city_details
+FROM contact c join
+	user_details ud on
+		ud.contact_id = c.id
+WHERE user_id = ud.id;
+END;
+/

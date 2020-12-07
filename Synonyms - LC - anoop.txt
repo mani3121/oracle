@@ -1,0 +1,111 @@
+1. Customer - Synonym-2250
+Create a synonym with the name 'client' for the table customer.
+
+create synonym client
+for customer;
+
+2. Create Synonym- Item (2251)
+Create a synonym with the name 'product' for the table item.
+
+create synonym product
+for item
+
+3. Create Synonym -Currency 2252
+Create a synonym with the name 'money' for the 'currency' table. 
+
+create synonym money
+for currency
+
+4. Transaction type details -View (2253)
+Create a view named 'transaction_type_details' to display all the details of transaction_type.
+
+create view transaction_type_details
+as (select * from transaction_type);
+
+5. Create a view named 'invoice_details' to display all the invoice details having zero balance.
+
+create view invoice_details
+as (select * from invoice 
+where balance = 0);
+
+6. Cheque details-View 2255
+Create a view named 'cheque_details' to display all the cheque details with bank_name as 'Yes Bank'.
+
+create view cheque_details
+as (select * from cheque
+where bank_name = 'Yes Bank');
+
+7. Payment details view 2256
+Create a view named 'payment_details' to display all the payment details that are received as  'Credit Card' payment.
+
+create view payment_details
+as (select * from payment
+where transaction_type_id in 
+(select id from transaction_type
+where type = 'Credit Card'));
+
+8. Contact - update Trigger 2257
+Create a trigger named 'trigger_contact_af_update' that is triggered whenever the contact table is updated. This trigger will insert the org_name and action into the table 'contact_log_history' after the updation of contact details. The action name in the affected log table contact_log_history is 'After_Update_Contact'. 
+
+Hints: Trigger name : trigger_contact_af_update 
+Table name : contact_log_history 
+Field names : org_name,action 
+Action  : 'After_Update_Contact'. 
+The table structure of contact_log_history is as follows:
+contact_log_history 
+Fields		datatype
+org_name	varchar2(30)
+action 		varchar2(30)
+
+create trigger trigger_contact_af_update
+after update on contact for each row
+begin
+insert into contact_log_history (org_name, action)
+values (:new.org_name,'After_Update_Contact');
+end;
+
+9. Credit-update Trigger 2258
+Create a trigger named 'trigger_credit_bf_update' that is triggered whenever the credit_card table is updated. This trigger will insert the cc_type and action into the table 'credit_card_log_history' before the updation of credit_card details. The action name in the affected log table credit_card_log_history is 'Before_Update_Credit_Card'. Refer to the schema
+Hints: 
+Trigger name : trigger_credit_bf_update 
+Table name : credit_card_log_history
+Field names : cc_type,action 
+Action : 'Before_Update_Credit_Card'. 
+The table structure of credit_card_log_history is as follows:
+credit_card_log_history
+Fields	dataype
+cc_type
+varchar(30)
+action
+varchar(30)
+
+create trigger trigger_credit_bf_update
+after update on credit_card for each row
+begin
+insert into credit_card_log_history
+(cc_type, action) 
+values (:old.cc_type,'Before_Update_Credit_Card');
+end;
+
+10. Insert-transaction Trigger 2259
+Create a trigger named 'transaction_type_af_insert' that is triggered whenever a new record is inserted into transaction_type table. This trigger will insert the new type and action into the table 'transaction_type_log_history' after the insertion of transaction type details. The action name in the affected log table transaction_type_log_history is 'After_Insert_transaction_type'. 
+
+Hints: Trigger name : transaction_type_af_insert 
+Table name : transaction_type_log_history 
+Field names : type,action 
+Action : 'After_Insert_transaction_type'. 
+The table structure of transaction_type_log_history is as follows:
+Fields
+datatype
+type
+varchar(30)
+action
+varchar(30)
+
+create trigger transaction_type_af_insert
+after insert on transaction_type for each row
+begin
+insert into transaction_type_log_history
+(type, action) 
+values (:new.type,'After_Insert_transaction_type');
+end;

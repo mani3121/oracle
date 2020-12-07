@@ -1,0 +1,239 @@
+1. Write a query to display payment id, amount and status of all the payments made by 'Credit Card' and 'Cheque'.  Display the details of the Credit Card first  ordered by id and then Cheque ordered by id.
+
+select p.id, p.amount, p.status
+from payment p join 
+    transaction_type tt on
+        p.transaction_type_id = tt.id
+where tt.type = any('Credit Card','Cheque')
+order by p.id asc;
+
+2. Write a query to display the number of purchase orders created by the user 'Nishasree' and  then the number of orders created by the user 'Shivani'. Give an alias name as  'Order_count'. Note: Use union Sample Output    
+
+select count(*) as Order_Count from purchase_order po
+where created_user_id in 
+( select id from user_details
+where username = 'Nishasree')
+UNION
+select count(*) as Order_Count from purchase_order po
+where created_user_id in 
+( select id from user_details
+where username = 'Shivani')
+
+3. Item details of ABC tech park (Q-2426)
+Write a query to display the item ids and item names of all the items whose purchase orders were processed and invoiced for the customer with org_name 'ABC Tech Park' and 'Cognizant'. Display the id and name of the items invoiced for the customer  'Cognizant' first and then from 'ABC Tech Park'. Note: Use union all
+ Hint: Fetch the org_name of the contact table by connecting through the customer table.
+
+Expected Answer:
+-----------------
+select it.id, it.name
+from item it join
+	invoice_line il on
+		il.item_id = it.id join
+	invoice inv on
+		il.invoice_id = inv.id
+where inv.customer_id in (
+select cust.id from
+customer cust 
+where cust.contact_id in (
+select cont.id from
+contact cont 
+where org_name = 'Cognizant'))
+UNION ALL
+select it.id, it.name
+from item it join
+	invoice_line il on
+		il.item_id = it.id join
+	invoice inv on
+		il.invoice_id = inv.id
+where inv.customer_id in (
+select cust.id from
+customer cust 
+where cust.contact_id in (
+select cont.id from
+contact cont 
+where org_name = 'ABC Tech Park'));
+
+As per question:
+----------------
+select it.id, it.name
+from item it join
+	invoice_line il on
+		il.item_id = it.id join
+	invoice inv on
+		il.invoice_id = inv.id
+where inv.customer_id in (
+select cust.id from
+customer cust 
+where cust.contact_id in (
+select cont.id from
+contact cont 
+where org_name = any('Cognizant','ABC Tech Park')))
+order by it.id;
+
+4. Purchase order created by ABC tech park and Cognizant (Q-2427)
+Write a query to display item id and item name of all the items  whose purchase order created by org_name 'ABC Tech Park' and 'Cognizant'. If there are any duplicate items remove it and display the id and name of the items created by 'Cognizant' first and then by 'ABC Tech Park'. 
+
+Note: Use union.
+
+select it.id, it.name
+from item it join
+	invoice_line il on
+		il.item_id = it.id join
+	invoice inv on
+		il.invoice_id = inv.id
+where inv.customer_id in (
+select cust.id from
+customer cust 
+where cust.contact_id in (
+select cont.id from
+contact cont 
+where org_name = 'Cognizant'))
+UNION
+select it.id, it.name
+from item it join
+	invoice_line il on
+		il.item_id = it.id join
+	invoice inv on
+		il.invoice_id = inv.id
+where inv.customer_id in (
+select cust.id from
+customer cust 
+where cust.contact_id in (
+select cont.id from
+contact cont 
+where org_name = 'ABC Tech Park'));
+
+5. Item count and status details(Q-2428)
+Write a query to display invoice_id, order_id and number of items ordered in each order_id of all invoices whose status is 'Completed' and 'Pending'. Give an alias name for number of items ordered as 'Item_count'. Display the records sorted in ascending order based on invoice_id of those invoice status 'Completed' first and then status 'Pending'. 
+
+Note: Use union
+
+select op.invoice_id, ol.order_id, count(ol.item_id) as Item_count
+from order_line ol, order_process op
+where ol.order_id = op.order_id
+and op.invoice_id in
+(select inv.id
+from invoice inv
+where inv.status = 'Completed')
+group by op.invoice_id,ol.order_id
+union
+select op.invoice_id, ol.order_id, count(ol.item_id) as Item_count
+from order_line ol, order_process op
+where ol.order_id = op.order_id
+and op.invoice_id in
+(select inv.id
+from invoice inv
+where inv.status = 'Pending')
+group by op.invoice_id,ol.order_id;
+
+6. Common items ordered by Cognizant and ABC Tech Park(Q-2429)
+Write a query to display item id and item name of all the items ordered whose purchase order created by org_name 'ABC Tech Park' and 'Cognizant'. Display only the common items ordered by 'Cognizant' and 'ABC Tech Park'.
+
+Note:Use intersect
+
+select id,name from item
+where id in
+(select item_id from invoice_line
+where invoice_id in
+(select id from invoice
+where customer_id in
+(select id from customer
+where contact_id in
+(select id from contact
+where org_name = 'Cognizant'))))
+intersect
+select id,name from item
+where id in
+(select item_id from invoice_line
+where invoice_id in
+(select id from invoice
+where customer_id in
+(select id from customer
+where contact_id in
+(select id from contact
+where org_name = 'ABC Tech Park'))));
+
+6. Orders processed in the year 2012 and 2015(Q-2430)
+Write a query to display invoice_id and order_id of the invoices with '0' payment_attempts and the orders processed in the year 2012 and 2015. Display the records processed in the year 2012 first (ordered by invoice id)  and then 2015 (ordered by invoice id). 
+
+Note: Use union
+
+select invoice_id as ID, order_id
+from order_process
+where extract(year from period_start) = 2012
+and invoice_id in
+(select id from invoice
+where payment_attempts = 0)
+union
+select invoice_id as ID, order_id
+from order_process
+where extract(year from period_start) = 2015
+and invoice_id in
+(select id from invoice
+where payment_attempts = 0)
+order by ID
+
+7. Number of payments(Q-2431)
+Write a query to display number of 'Pending'  payments and then number of 'Completed' payments. Give an alias name as "Number_of_payments'.
+
+Note : Use union
+
+select count(*) as Number_of_payments
+from payment
+where status = 'Pending'
+union
+select count(*) as Number_of_payments
+from payment
+where status = 'Completed'
+
+8. Write a query to display the number of payments made by the user 'arun' that are 'Completed' and then the number of payments made by the user 'arun' that are 'Pending'. Give an alias name as 'Number of payments'. 
+
+Note: Use union
+
+select count(*) as Number_of_payments
+from payment
+where status = 'Completed' and 
+user_id in 
+(select id
+from user_details
+where username = 'arun')
+union
+select count(*) as Number_of_payments
+from payment
+where status = 'Pending' and
+user_id in 
+(select id
+from user_details
+where username = 'arun')
+
+9. Items purchased more than 10 in quantity(Q-2433)
+Write a query to display item id, item name and quantity of all the items purchased more than 10 in quantity and whose purchase orders processed and invoiced for the customer "Cognizant" . Do not consider items in this list that has been purchased by Customer "ABC Tech Park". Display the items ordered by item id.
+
+Note:Use minus 
+
+select it.id, it.name, il.quantity
+from item it, invoice_line il
+where il.quantity > 10 and
+it.id = il.item_id and
+il.invoice_id in
+(select id
+from invoice
+where customer_id in 
+(select id from customer
+where contact_id in
+(select id from contact
+where org_name = 'Cognizant')))
+MINUS
+select it.id, it.name, il.quantity
+from item it, invoice_line il
+where il.quantity > 10 and
+it.id = il.item_id and
+il.invoice_id in
+(select id
+from invoice
+where customer_id in 
+(select id from customer
+where contact_id in
+(select id from contact
+where org_name = 'ABC Tech Park')))
+order by 1;

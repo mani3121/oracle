@@ -1,0 +1,77 @@
+Restrict, Sort, Customize Output - LC
+
+1. Write a query to display the credit_card details having cc_type as 'Visa'.Display the records in ascending order based on the name.
+
+SELECT * FROM CREDIT_CARD WHERE CC_TYPE = 'Visa'
+ORDER BY NAME ASC
+
+2. Write a query to display all the cheque details that belongs to the bank 'ICICI Bank'. Display the records in ascending order based on the cheque_date.
+
+SELECT * FROM CHEQUE WHERE BANK_NAME = 'ICICI Bank'
+ORDER BY CHEQUE_DATE ASC
+
+3. Write a query to display the id,attempt,status and amount of all the payments having payment status as 'Pending'.Display the records in ascending order based on their id.
+
+SELECT  id, attempt, status , amount  FROM PAYMENT WHERE STATUS = 'Pending'
+ORDER BY ID ASC
+
+4. Write a query to display the id,due_date,total and balance of all the invoices in 'Completed' status. Display the records in ascending order based on their id.
+
+SELECT ID, DUE_DATE, TOTAL, BALANCE FROM INVOICE WHERE STATUS = 'Completed'
+ORDER BY ID ASC
+
+5. Write a query to display all the user details with 2 or more failure attempts (i.e >=2 failure attempts). Display the records in ascending order based on their id.
+
+SELECT * FROM USER_DETAILS WHERE FAILED_ATTEMPTS >= '2'
+ORDER BY ID ASC
+
+6. Write a query to display the id,due_date,total,balance of all the invoices which were created between the  month of 'March' and 'April'. Display the records in ascending order based on their id.
+
+SELECT ID, DUE_DATE, TOTAL, BALANCE FROM INVOICE WHERE CREATED_TIME like '%APR%' or 
+CREATED_TIME LIKE '%MAR%'
+ORDER BY ID ASC
+
+7. Write a query to display the org_name,first_name,email and city of all the contacts that belongs to the state 'Karnataka'  or 'TamilNadu'. Display the records in ascending order based on their org_name and then by first_name.
+
+SELECT org_name, first_name, email ,  city  FROM CONTACT WHERE STATE IN ('Karnataka',  'TamilNadu')
+ORDER BY ORG_NAME, FIRST_NAME ASC
+
+8. Write a query to display the username,user_password of all the users with atleast  one failure attempt.Display the records in descending order based on their username.
+
+SELECT USERNAME, USER_PASSWORD FROM USER_DETAILS WHERE FAILED_ATTEMPTS >= 1
+ORDER BY USERNAME DESC
+
+9. Write a query to display the name and internal number of all the items that has price greater than '20000'.Display the record in ascending order based on their name. 
+
+SELECT NAME, INTERNAL_NUMBER FROM ITEM WHERE PRICE > '20000'
+ORDER BY NAME ASC
+
+10. Write a query to display the customer id and note of all the customers those who have their credit limit more than '20000'.Display the records in ascending order based on their id. 
+
+SELECT ID, NOTES FROM CUSTOMER WHERE CREDIT_LIMIT > '20000'
+ORDER BY ID ASC
+
+11. Write a query to display the bill_type,active_since,active_until of all the purchase_orders in 'completed' status.Display the records in ascending order based on their active_since value. 
+
+SELECT BILL_TYPE, ACTIVE_SINCE, ACTIVE_UNTIL FROM PURCHASE_ORDER WHERE STATUS = 'Completed' 
+ORDER BY ACTIVE_SINCE ASC
+
+12. Write a query to display the username,lastlogin_time of all the users those who last logged in the month of 'February'.Display the records in ascending order based on their lastlogin value. 
+
+SELECT USERNAME, LASTLOGIN_TIME FROM USER_DETAILS WHERE LASTLOGIN_TIME  LIKE '%-FEB-%'
+ORDER BY LASTLOGIN_TIME ASC
+
+13. Write a query to display user id and username of the users that are not deleted. Display the records sorted in ascending order based on the id.
+
+SELECT ID, USERNAME FROM USER_DETAILS WHERE DELETED = '0'
+ORDER BY ID ASC
+
+14. Write a query to display invoice id, due_date, total, status, balance and customer_notes of the invoices which have payment_attempts 0 or 1. Display the records sorted in ascending order based on the id. 
+
+SELECT ID, DUE_DATE, TOTAL, STATUS, BALANCE, CUSTOMER_NOTES FROM INVOICE WHERE PAYMENT_ATTEMPTS IN ('0', '1')
+ORDER BY ID ASC
+
+15. Write a query to display the code and country name of the currency details having country name 'India' or 'Singapore'. Display the records sorted in ascending order based on the country.
+
+SELECT CODE, COUNTRY FROM CURRENCY WHERE COUNTRY IN ('India', 'Singapore')
+ORDER BY COUNTRY ASC

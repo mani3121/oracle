@@ -1,0 +1,50 @@
+1. Carrier Details(Q-2307)
+Write a query to display id, iata and carrier_code of the carriers from the country 'India'. Display the records sorted in ascending order based on iata. 
+
+select c.id, c.iata, c.carrier_code 
+from carrier c join
+    address a on  
+        c.address_id = a.id
+where a.country = 'India'
+order by c.iata asc
+
+2. Arrived at destination(Q-2318)
+Write a query to display the shipment details with the status 'Arrived at destination'. Display the records sorted in ascending order based on the shipment name.
+
+select * from shipment 
+where name in
+(select distinct s.name 
+from shipment s join
+	shipment_status ss on
+		s.shipment_status_id = ss.id
+where ss.status = 'Arrived at destination')
+order by name asc
+
+3. Carrier details which belongs to the country USA(Q-2324)
+Write a query to display carrier_code, iata, work_phone, email, city, state and country of the carriers which belongs to the country 'USA'. Display the records sorted in ascending order based on the carrier_code. 
+
+select c.carrier_code, c.iata, a.work_phone, a.email, a.city, a.state, a.country
+from carrier c join
+	address a on
+		c.address_id = a.id
+where a.country = 'USA'
+order by c.carrier_code asc
+
+4. Shipment Entity Details(Q-2312)
+Write a query to display the shipment_entity details that are being shipped to 'Mumbai' port. Display the records sorted in ascending order based on the id. Sample Output 
+
+select se.id,
+    se.name,
+    se.contact_first_name,
+    se.contact_last_name,
+    se.identification_number,
+    se.credit_limit,
+    se.is_active,
+    se.address_id
+from shipment_entity se inner join
+	shipment s on
+		s.shipment_entity_id = se.id inner join
+	port p on
+		s.arrival_port_id = p.id
+where p.name = 'Mumbai'
+order by se.id asc

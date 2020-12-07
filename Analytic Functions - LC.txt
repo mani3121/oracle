@@ -1,0 +1,101 @@
+1. Average payment (Q-2302)
+Write a query to display all payment id, invoice_id, amount and average amount of the payments within the invoice_id. Give alias name as 'average_payment'. Display the records in ascending order based on the invoice_id. 
+
+Hints: Analytic Function: avg() Analytic Clause: query_partition_clause.
+
+select id, invoice_id, amount, avg(amount) over (partition by invoice_id) as average_payment
+from payment
+order by invoice_id asc;
+
+2. Average of all the payments (Q-2303)
+Write a query to display all payment id, invoice_id, amount and running average amount of all payments within the invoice_id. Give alias name as 'average_payment'. Display the records in ascending order based on the invoice_id.
+
+Hints: Analytic Function: avg() Analytic Clause: query_partition_clause and order_by_clause. 
+
+select id, invoice_id, amount,
+avg(amount) over (partition by invoice_id order by amount) as average_payment
+from payment
+order by invoice_id asc;
+
+3. First payment (Q-2304)
+Write a query to display the payment id, invoice_id, amount and first payment amount of each invoice_id. Give alias name as 'first_payment'. Display the records in ascending order based on the invoice_id. 
+
+Hints: Analytic Function: FIRST_VALUE( ) Analytic Clause: query_partition_clause and order_by_clause 
+
+select id, invoice_id, amount,
+first_value(amount) over (partition by invoice_id order by amount) as first_payment
+from payment
+order by invoice_id asc;
+
+4. Cumulative distribution of the amount received (Q-2305)
+Write a query to display all invoice_id, amount and cumulative distribution of the amount received for the invoice_id. Give an alias name as 'cume_dist_payment'. Display cumulative distribution correct to 2 decimal places using round(). Display the records in ascending order based on the amount.
+
+Hints: Analytic Function: CUME_DIST() Analytic Clause: query_partition_clause and order_by_clause
+
+select invoice_id, amount,
+round(cume_dist() over (partition by invoice_id order by amount)*100,2) as cume_dist_payment
+from payment
+order by 1 asc;
+
+5. Serial number to each customer (Q-2475)
+Write a query to display all customer_id, total and running serial number to each customer with alias name as 'SNO'. Display the records in ascending order based on the customer_id and then by SNO. 
+
+Hints: Analytic Function: ROW_NUMBER( ) Analytic Clause: query_partition_clause and order_by_clause Sample Output : Hint: Consider customer_id for PARTITION BY
+
+select customer_id, total,
+row_number() over (PARTITION BY customer_id ORDER BY id NULLS LAST) as SNO
+from invoice
+order by 1 asc, 3 asc;
+
+6. Customer total and rank(Q-2476)
+Write a query to display all customer_id, sum of total with alias name as 'customer_total' and rank of each customer according to their total with alias name as 'Rank'. Display the records in ascending order based on the Rank. 
+
+Hints: Analytic Function: RANK() Analytic Clause: order_by_clause 
+
+select customer_id, sum(total) as customer_total,
+rank() over (order by sum(total) desc) as Rank
+from invoice
+group by customer_id
+order by 3 asc;
+
+7. Maximum payment (Q-2477)
+Write a query to display all  invoice_id, amount and maximum payment amount of each invoice_id. Give alias name as 'max_amount'. Display the records in ascending order based on the invoice_id and then by amount.
+
+Hints: Analytic Function: MAX( ) Analytic Clause: query_partition_clause and order_by_clause 
+
+select invoice_id, amount,
+MAX(amount) over (partition by invoice_id) as max_amount
+from payment
+order by invoice_id asc, amount asc;
+
+8. Minimum amount (Q-2478)
+Write a query to display all customer_id, total and minimum total of each customer with alias name as 'min_amount'. Display the records in ascending order based on the customer_id and then by total. 
+
+Hints: Analytic Function: MIN( ) Analytic Clause: query_partition_clause and order_by_clause 
+
+select customer_id, total,
+min(total) over (partition by customer_id) as min_amount
+from invoice
+order by customer_id asc, total asc;
+
+9. Total amount by date (Q-2479)
+Write a query to display the  customer_id, created_time, total, sum of total by all invoice with alias name as 'Total invoice Amount', sum of total by each customer invoice with alias name as 'Total invoice By Customer' and sum of total by each date with alias name as 'Total Amount by date'. Display the records sorted in ascending order by customer_id and then by created_time.
+
+Hints: Analytic Function: SUM( ) Analytic Clause: query_partition_clause and order_by_clause.
+
+select customer_id, created_time, total,
+(select sum(total)
+from invoice) as "Total invoice Amount",
+sum(total) over (partition by customer_id) as "Total invoice By Customer",
+sum(total) over (partition by created_time) as "Total Amount by date"
+from invoice
+order by 1 asc, 2 asc;
+
+10. Next payment (Q-2480)
+Write a query to display all the id , amount received and next amount that is received after every payment and give an alias name as 'Next payment'  with status as 'Completed'. Display the records in ascending order based on id. 
+
+select id, amount,
+lead(amount,1) over (order by id) as "Next payment"
+from payment
+where status = 'Completed'
+order by id asc;

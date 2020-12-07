@@ -1,0 +1,23 @@
+1. First Total Profit(Q-2482)
+Write a query to display the port name, total_profit and first total_profit carried out by each port. Give alias name as 'first_total_profit '.Display the records in ascending order based on the port name.
+
+Hints: Analytic Function: FIRST_VALUE( ) Analytic Clause: query_partition_clause and order_by_clause 
+
+select port.name, ship.total_profit,
+FIRST_VALUE(ship.total_profit) over (partition by ship.departure_port_id
+order by ship.total_profit) as first_total_profit
+from shipment ship join
+port port on 
+ship.departure_port_id = port.id
+order by 1 asc;
+
+2. Total Weight Of Each Port (Q-2485)
+Write a query to display all port name, total_weight and minimum total_weight of each port. Give alias name as 'port_min_weight'.Display the records in ascending order based on port name.
+
+select port.name, ship.total_weight,
+min(ship.total_weight) over (partition by ship.departure_port_id)
+as port_min_weight
+from shipment ship join
+port port on 
+ship.departure_port_id = port.id
+order by 1 asc;

@@ -1,0 +1,60 @@
+Restrict, Sort, Customize Output - CC
+
+1. Write a query to display the description of all the package types of any of the following lengths(12,15,17).  Display the records in ascending order based on their Description.
+
+SELECT DESCRIPTION FROM PACKAGE_TYPE WHERE PACKAGE_LENGTH IN ('12', '15', '17')
+ORDER BY DESCRIPTION ASC
+
+2. Write a query to display the notes,total_value of all commodities that are  all carried under any of the cargo_ids (2,3,105).Display the records in ascending order by notes. 
+
+SELECT NOTES, TOTAL_VALUE FROM COMMODITY WHERE CARGO_ID IN ('2', '3', '105')
+ORDER BY NOTES ASC
+
+3. Write a query to display shipment_entity id, name and identification number of all the shipment_entity that have credit_limit greater than the credit_limit of shipment_id 9. Display the records sorted in ascending order based on id. 
+
+SELECT ID, NAME, IDENTIFICATION_NUMBER FROM SHIPMENT_ENTITY WHERE CREDIT_LIMIT > All (SELECT CREDIT_LIMIT FROM SHIPMENT_ENTITY WHERE  ID = '9')
+ORDER BY ID ASC
+
+SELECT ID, NAME, IDENTIFICATION_NUMBER FROM SHIPMENT_ENTITY WHERE CREDIT_LIMIT > (SELECT CREDIT_LIMIT FROM SHIPMENT_ENTITY WHERE  CREDIT_LIMIT = '87962.15')
+ORDER BY ID ASC
+
+4. Write a query to display the status and description of all shipment_status of code(3,29,33).Display the records in ascending order based on their status. 
+
+SELECT STATUS, DESCRIPTION FROM SHIPMENT_STATUS WHERE CODE IN ('3', '29', '33')
+ORDER BY STATUS ASC
+
+5. Write a query to display the user details like firstname, lastname and contact_number  in which the role name is 'Admin' or 'Customer'. Display the records  in ascending order  based on firstname.
+
+SELECT FIRST_NAME, LAST_NAME, CONTACT_NUMBER FROM USER_DETAILS WHERE ROLE_NAME IN ('Admin', 'Customer')
+ORDER BY FIRST_NAME ASC
+
+6. Write a query to display the description and model of all commodity identification which contains the serial number ends with '2'. Display the records in ascending order based on model.
+
+SELECT DESCRIPTION, MODEL FROM COMMODITY_IDENTIFICATION WHERE SERIAL LIKE '%2'
+ORDER BY MODEL ASC
+
+7. Write a query to display shipment_entity id, name and identification number of all the shipment_entity that have credit_limit greater than the credit_limit of shipment where name as 'Air Conditioner'. Display the records sorted in ascending order based on id.
+Use: ANY 
+
+SELECT ID, NAME, IDENTIFICATION_NUMBER FROM SHIPMENT_ENTITY WHERE CREDIT_LIMIT > (SELECT CREDIT_LIMIT FROM SHIPMENT_ENTITY WHERE  Name = 'Air Conditioner')
+ORDER BY ID ASC
+
+
+
+8.Write a query to display cargo id, description, cargo_length, width, height, weight and volume of the cargo with volume greater than 200, 300 and 350. 
+Display the records sorted in ascending order based on cargo id.
+Use: ALL
+
+select id, description, cargo_length, width, height, weight, volume fromcargo where volume >350 order by id
+
+9. Write a query to display the name of all the ports that belong to 'India'. Display the records in ascending order based on their name.
+
+select name from port where country='India' order by name asc;
+
+10. Write a query to display the user id, first_name, contact_number and role_name of the user whose first_name starts with either 'S' or 'A'. Display the records sorted in ascending order based on id.
+
+SELECT ID, FIRST_NAME, CONTACT_NUMBER, ROLE_NAME FROM USER_DETAILS WHERE FIRST_NAME LIKE 'S%' OR FIRST_NAME LIKE 'A%';
+
+
+
+
